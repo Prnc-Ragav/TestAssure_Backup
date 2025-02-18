@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div id="side-bar">
+        <div class="logo">
+            <img class="logo-img" src="images/testingLogo.png" alt="LOGO">
+            <div class="logo-text">AFA TEST</div>
+        </div>
+        <nav>
+            <ul>
+                <li>
+                    <a href="">DASHBOARD</a>
+                </li>
+                <li>
+                    <a href="">TEST CASES</a>
+                </li>
+                <li>
+                    <a href="">HISTORY</a>
+                </li>
+                <li>
+                    <a href="">SETTINGS</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <img id="menu-icon" src="images/menuBar.png" alt="menu">
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="user-menu">
+                <img id="user-img" src="images/guestLogo.png" alt="user">
+                <span>User</span>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="dg">
+                <h1>New Scan</h1>
+                <div class="scan-div">
+                    <input type="text" name="url" id="inputURL" placeholder="Enter the URL here">
+                    <button id="startTesting-button">Start Testing</button>
+                </div>
+            </div>
+            <div class="dg">
+                <h1>Statistics Report</h1>
+                <div class="statistics-div">
+                    <div class="statistic">
+                        <span class="testCaseStatistics" id="totalTestCases">24</span>
+                        <span>Total Test Case</span>
+                    </div>
+                    <div class="statistic">
+                        <span class="testCaseStatistics" id="passedCases">12</span>
+                        <span>Passed</span>
+                    </div>
+					<div class="statistic">
+                        <span class="testCaseStatistics" id="failedCases">3</span>
+                        <span>Failed</span>
+                    </div>
+                </div>
+            </div>
+            <div class="dg testCase-results">
+                <h1>Test Cases</h1>
+                <div id="test-result"></div>
+                <div id="download-buttons-div"></div>
+            </div>
+            <div class="report-div">
+                <div class="rr">
+                	<h2>Passed Test Cases</h2>
+                	<div id="report-passedTestCases"></div>
+                </div>
+                <div class="rr">
+                	<h2>Failed Test Cases</h2>
+                	<div id="report-failedTestCases"></div>
+                </div>
+                <div class="rr report-chart"></div>
+                <div class="rr report-vulnerabilities"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="js/script.js"></script>
+</body>
+</html>
