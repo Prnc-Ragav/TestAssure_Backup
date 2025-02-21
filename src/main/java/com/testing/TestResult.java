@@ -41,4 +41,62 @@ public class TestResult {
                 + "\"result\": \"" + result + "\""
                 + "}";
     }
+
+	public String getTestCaseName() {
+		return testCaseName;
+	}
+
+	public void setTestCaseName(String testCaseName) {
+		this.testCaseName = testCaseName;
+	}
+
+	public String getFieldType() {
+		return fieldType;
+	}
+
+	public void setFieldType(String fieldType) {
+		this.fieldType = fieldType;
+	}
+
+	public String getFieldName() {
+		return fieldName;
+	}
+
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
+	}
+
+	public String getGivenInput() {
+		return givenInput;
+	}
+
+	public void setGivenInput(String givenInput) {
+		this.givenInput = givenInput;
+	}
+
+	public String getExpectedOutput() {
+		return expectedOutput;
+	}
+
+	public void setExpectedOutput(String expectedOutput) {
+		this.expectedOutput = expectedOutput;
+	}
+
+	public String getActualOutput() {
+		return actualOutput;
+	}
+
+	public void setActualOutput(String actualOutput) {
+		this.actualOutput = actualOutput;
+	}
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
+    
+    
 }

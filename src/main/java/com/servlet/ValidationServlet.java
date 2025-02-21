@@ -1,4 +1,4 @@
-package com.testing;
+package com.servlet;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,8 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
+import com.testing.FieldExtractor;
+import com.testing.TestResult;
 
 /**
  * Servlet implementation class ValidationServlet
@@ -55,7 +58,10 @@ public class ValidationServlet extends HttpServlet {
         }
 		
 		try {
-			List<TestResult> testResults = FieldExtractor.extractFields(url); 
+			FieldExtractor fieldExtractor = new FieldExtractor();
+			
+			List<TestResult> testResults = fieldExtractor.extractFields(url); 
+			List<String> executedMethods = fieldExtractor.executedMethods;
 
 			if (testResults == null || testResults.isEmpty()) {
                 response.getWriter().write("[]"); // Return an empty array if no results
@@ -65,6 +71,11 @@ public class ValidationServlet extends HttpServlet {
                 String jsonResponse = new Gson().toJson(testResults);
                 response.getWriter().write(jsonResponse);
                 System.out.println(jsonResponse);
+                
+                HttpSession session = request.getSession();
+    			session.setAttribute("testResults", testResults);
+    			session.setAttribute("executedMethods", executedMethods);
+    			session.setAttribute("url", url);
             }
 			
 			
