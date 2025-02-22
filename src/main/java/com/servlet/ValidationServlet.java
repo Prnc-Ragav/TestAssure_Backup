@@ -68,14 +68,16 @@ public class ValidationServlet extends HttpServlet {
             } 
 			
 			else {
-                String jsonResponse = new Gson().toJson(testResults);
-                response.getWriter().write(jsonResponse);
-                System.out.println(jsonResponse);
-                
-                HttpSession session = request.getSession();
+				
+				HttpSession session = request.getSession();
     			session.setAttribute("testResults", testResults);
     			session.setAttribute("executedMethods", executedMethods);
     			session.setAttribute("url", url);
+    			
+    			
+                String jsonResponse = new Gson().toJson(testResults);
+                response.getWriter().write(jsonResponse);
+                System.out.println(jsonResponse);
             }
 			
 			

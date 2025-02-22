@@ -32,6 +32,11 @@ public class FieldExtractor {
 	    List<WebElement> inputFields = driver.findElements(By.tagName("input"));
         inputFields.addAll(driver.findElements(By.tagName("select")));
         inputFields.addAll(driver.findElements(By.tagName("textarea")));
+        inputFields.addAll(driver.findElements(By.tagName("a")));
+        System.out.println("Input Fields Count : ============================>"+inputFields.size());
+        
+        List<WebElement> anchorTags = driver.findElements(By.tagName("a"));
+        System.out.println("Anchor tag Count : ============================>"+anchorTags.size());
 	    
         System.out.println("=================>"+inputFields);
 //        if (inputFields.isEmpty()) {

@@ -1,5 +1,7 @@
 package com.testing;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,6 @@ public class TestCase {
     public List<TestResult> runTests(List<WebElement> fields) {
     	List<TestResult> results = new ArrayList<>();
     	
-    	System.out.println(">>>>>>>>>>>>>>>>Size"+fields.size());
     	for (WebElement field : fields) {
             String fieldType = field.getAttribute("type");
             String fieldName = field.getAttribute("name");
@@ -61,6 +62,9 @@ public class TestCase {
                 	System.out.println("=================>"+5);
                     results.add(testDropdown(field, fieldType, fieldName));
                 }
+            }
+            else if(field.getTagName().equals("a") && field.getAttribute("href")!=null) {
+            	results.add(checkLink(field.getAttribute("href")));
             }
         }
     	
@@ -314,6 +318,39 @@ public class TestCase {
 
         return new TestResult(testCaseName, fieldType, fieldName, givenInput, expectedOutput, actualOutput, result);
     }
+	
+	
+	private static TestResult checkLink(String linkUrl) {
+    	
+	    try {
+	        URL url = new URL(linkUrl);
+	        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+	        connection.setRequestMethod("GET");
+//	        connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+//	        connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+//	        connection.setRequestProperty("Referer", "https://www.google.com/");
+//	        connection.setInstanceFollowRedirects(true); 
+	        connection.connect();
+	        int responseCode = connection.getResponseCode();
+
+	        if (responseCode >= 400) {
+	        	
+	        	System.out.println("❌ Broken: " + linkUrl + " (Status: " + responseCode + ")");
+	        	return new TestResult("Broken Link Test","Link", "Hyper text","Try to laod link","The page loaded", responseCode + "page not found" ,"Failed");
+	            
+	        } else {
+	        	
+	        	System.out.println("✅ Working: " + linkUrl);
+	        	return new TestResult("Broken Link Test","Link", "Hyper text","Try to laod link","The page loaded", "Page loaded successfully" ,"Passed");
+	            
+	        }
+	    } catch (Exception e) {
+	    	
+	    	
+	        System.out.println("❌ Error: " + linkUrl);
+	        return new TestResult("Broken Link Test","Link", "Hyper text","Try to laod link","The page loaded", "page not found" ,"Failed");
+	    }
+	}
     
     
 //    private static TestResult runBasicTest(WebElement field, String givenInput) {
