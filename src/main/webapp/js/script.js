@@ -1,24 +1,360 @@
+let landingAnime = document.getElementsByClassName("landing-anime");
+let loadingAnime = document.getElementsByClassName("loading-anime");
+let invalidInputAnime = document.getElementsByClassName("invalid-error-anime");
+let processErrorAnime = document.getElementsByClassName("process-error-anime");
+let canvasDiv = document.getElementsByClassName("canvas-div");
+
+
 document.getElementById("menu-icon").addEventListener("click", function () {
-  document.getElementById("side-bar").classList.toggle("show");
+	document.getElementById("side-bar").classList.toggle("show");
+});
+  
+  
+  
+  
+function showModal() {
+	document.getElementById('overlay').style.display = 'block';
+}
+  
+function hideModal() {
+	document.getElementById('overlay').style.display = 'none';
+}
+  
+let fetchFieldsBtn = document.getElementById("fetch-fields");
+let saveTestsButton = document.getElementById("save-testInputs-btn");
+let startTestingButton = document.getElementById("startTesting-button");
+
+fetchFieldsBtn.addEventListener("click", function() {
+	
+	console.log("entered");
+	
+	document.getElementById("totalTestCount").innerText = "00";
+	document.getElementById("passedTestCount").innerText = "00";
+	document.getElementById("failedTestCount").innerText = "0";
+	
+	document.getElementById("test-result").innerText="";
+	document.getElementById("report-passedTestCases").innerText="";
+	document.getElementById("report-failedTestCases").innerText="";
+	
+	for (let i = 0; i < landingAnime.length; i++) {
+        landingAnime[i].classList.remove("active");
+		landingAnime[i].classList.add("hide");
+    }
+	
+	for (let i = 0; i < loadingAnime.length; i++) {
+		loadingAnime[i].classList.remove("hide");
+        loadingAnime[i].classList.add("active");
+    }
+	
+	clearCanvas('testResultsChart');
+	clearCanvas('categoryChart');
+	
+	for (let i = 0; i < canvasDiv.length; i++) {
+		canvasDiv[i].classList.add("hideCanvas");
+	}
+		
+    fetchTestCases();
 });
 
+saveTestsButton.addEventListener("click", function(){
+    overlay.style.display = 'none';
+    startTestingButton.style.display = 'inline-block';
+    startTestingButton.classList.add('shine-animation');
+});
+
+document.getElementById("startTesting-button").addEventListener('click', function() {
+	// Remove the animation class to stop the shining effect
+	startTestingButton.classList.remove('shine-animation');
+});
+
+
+
+let testCases = [];
+
+function fetchTestCases() {
+	
+    let url = document.getElementById("inputURL").value;
+
+    fetch("extractFields", {
+        method: "POST",
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: "url=" + encodeURIComponent(url)
+        /*body: new URLSearchParams({ url })*/
+    })
+    .then(response => response.json())
+    .then(data => {
+        testCases = data;
+        renderTestCases();
+    });
+}
+
+function renderTestCases() {
+    let tableBody = document.querySelector("#testTable tbody");
+    tableBody.innerHTML = ""; // Clear previous content
+
+    testCases.forEach((test, index) => {
+		
+		if (!test || !Array.isArray(test.predefinedInputs)) {
+	        console.error(`Error: predefinedInputs missing for test case at index ${index}`, test);
+	        test.predefinedInputs = []; // Initialize empty array to prevent crashes
+	    }
+			
+			
+        let row = document.createElement("tr");
+
+        let testCaseCell = document.createElement("td");
+        testCaseCell.textContent = test.testCaseName;
+        row.appendChild(testCaseCell);
+
+        let inputCell = document.createElement("td");
+        let predefinedInputs = test.predefinedInputs.map(input => `<span>${input}</span>`).join(", ");
+        inputCell.innerHTML = `${predefinedInputs} <br> <input type="text" id="customInput${index}" placeholder="Add Custom Input">`;
+        row.appendChild(inputCell);
+
+        let actionCell = document.createElement("td");
+        let addButton = document.createElement("button");
+        addButton.textContent = "Add";
+        addButton.onclick = function() {
+            let customInput = document.getElementById(`customInput${index}`).value;
+            if (customInput) {
+                test.predefinedInputs.push(customInput); // Add new input to test case
+                renderTestCases(); // Re-render the table to update inputs
+            }
+        };
+        actionCell.appendChild(addButton);
+        row.appendChild(actionCell);
+
+        tableBody.appendChild(row);
+    });
+
+    showModal();
+}
+
+
+
+
+
+
+let userInputs = {};
+
+function saveAndClose() {
+    userInputs = {}; // Reset stored inputs
+
+    testCases.forEach((test, index) => {
+        let customInput = document.getElementById(`customInput${index}`).value;
+        
+        // Use test.testCaseName instead of test.fieldName
+        let testCaseKey = test.testCaseName || `TestCase${index}`;
+
+        // Ensure the key exists in the object before pushing inputs
+        if (!userInputs[testCaseKey]) {
+            userInputs[testCaseKey] = [...test.predefinedInputs];
+        }
+
+        if (customInput) {
+            userInputs[testCaseKey].unshift(customInput); // Add custom input to the start
+        }
+    });
+
+    console.log("Saved User Inputs:", userInputs); // Debugging		//JSON.stringify(userInputs, null, 2)
+    hideModal();
+}
+
+/*function saveAndClose() {
+    userInputs = {}; // Reset stored inputs
+
+    testCases.forEach((test, index) => {
+        let inputField = document.getElementById(`customInput${index}`);
+        if (inputField) {  // Check if input field exists before reading value
+            let customInput = inputField.value;
+            userInputs[test.fieldName] = customInput ? [customInput, ...test.predefinedInputs] : test.predefinedInputs;
+        } else {
+            console.warn(`Input field not found: customInput${index}`);
+        }
+    });
+
+    console.log("Saved User Inputs:", userInputs);
+    
+	hideModal();
+}*/
+
+/*function saveAndClose() {
+    userInputs = {}; // Reset stored inputs
+
+    testCases.forEach((test, index) => {
+        let customInput = document.getElementById(`customInput${index}`).value;
+        userInputs[test.fieldName] = customInput ? [customInput, ...test.predefinedInputs] : test.predefinedInputs;
+    });
+
+    console.log("Saved User Inputs:", userInputs);
+    
+	hideModal();
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function showChartRepresentation() {
+	fetch("getChartRepresentation")
+	    .then(response => response.json())
+	    .then(data => {
+	        // Extract Passed count
+	        const passedCount = data["Passed"];
+
+	        // Extract Failed reasons
+	        const failedReasons = data["Failed Reasons"];
+	        const failedLabels = Object.keys(failedReasons);
+	        const failedValues = failedLabels.map(key => failedReasons[key]);
+			
+			
+			const failedCount = Object.values(failedReasons).reduce((sum, count) => sum + count, 0);
+			const totalTestCases = passedCount + failedCount;
+			
+			animateCounter("totalTestCount", totalTestCases, "blue");
+			animateCounter("passedTestCount", passedCount, "green");
+	        animateCounter("failedTestCount", failedCount, "red");
+			
+
+	        // Pie Chart Data (Passed + Failed Reasons)
+	        const pieLabels = ["Passed", ...failedLabels];
+	        const pieValues = [passedCount, ...failedValues];
+	
+			// Clear previous Pie Chart
+			clearCanvas('testResultsChart');
+					
+	        // Display Pie Chart (Passed vs Failure Reasons)
+	        const canvas1 = document.getElementById('testResultsChart').getContext('2d');
+	        const pieChart = new Chart(canvas1, {
+	            type: 'pie',
+	            data: {
+	                labels: pieLabels,
+	                datasets: [{
+	                    data: pieValues,
+	                    backgroundColor: ["green", "red", "orange", "purple", "blue"]
+	                }]
+	            }
+	        });
+			
+			// Store Chart instance for later clearing
+			document.getElementById('testResultsChart').chartInstance = pieChart;
+					
+					
+
+	        // Extract Field Types Count
+	        const fieldTypeLabels = Object.keys(data["Field Types"]);
+	        const fieldTypeValues = fieldTypeLabels.map(key => data["Field Types"][key]);
+	
+			// Clear previous Bar Chart
+			clearCanvas('categoryChart');
+					
+	        // Display Bar Chart (Field Types)
+	        const canvas2 = document.getElementById('categoryChart').getContext('2d');
+	        const barChart = new Chart(canvas2, {
+	            type: 'bar',
+	            data: {
+	                labels: fieldTypeLabels,
+	                datasets: [{
+	                    label: 'Field Type Count',
+	                    data: fieldTypeValues,
+	                    backgroundColor: "blue"
+	                }]
+	            },
+				options: {
+			        responsive: true,
+			        maintainAspectRatio: false,  // Prevent Chart.js from forcing aspect ratio
+			    }
+	        });
+			
+			// Store Chart instance for later clearing
+			document.getElementById('categoryChart').chartInstance = barChart;
+			
+			for (let i = 0; i < canvasDiv.length; i++) {
+		        canvasDiv[i].classList.remove("hideCanvas");
+				canvasDiv[i].classList.add("showCanvas");
+		    }
+	    })
+	    .catch(error => console.error('Error fetching data:', error));
+}
+
+
+function clearCanvas(canvasId) {
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext('2d');
+    
+    // Reset canvas by destroying the existing Chart instance if present
+    if (canvas.chartInstance) {
+        canvas.chartInstance.destroy();
+    }
+    
+    // Clear the canvas manually
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function animateCounter(id, targetValue, color) {
+    let count = 0;
+    const element = document.getElementById(id);
+    element.style.color = color; // Change text color dynamically
+
+    const interval = setInterval(() => {
+        if (count < targetValue) {
+            count++;
+            element.innerText = count;
+        } else {
+            clearInterval(interval);
+        }
+    }, 100); 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 document.getElementById("startTesting-button").addEventListener("click", function(event){
+	
 	event.preventDefault();
 	
 	let url = document.getElementById("inputURL").value;
 	let resultsDiv = document.getElementById("test-result");
 	
-	fetch("test", {
+	fetch("runTestCases", {
 		method: "POST",
-	    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-	   	body: "url=" + encodeURIComponent(url)
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(userInputs) // Send inputs as JSON
+				
+		/*headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: "userInputs=" + encodeURIComponent(JSON.stringify(userInputs))*/
+	    
+		/*headers: { "Content-Type": "application/x-www-form-urlencoded" },
+	   	body: "url=" + encodeURIComponent(url)*/
 	})
 	.then(response => response.json())	
 	
 	.then(data => {
 		
 		console.log("Server Response:", data); // Debugging: Check what the server returns
-		
+		for (let i = 0; i < loadingAnime.length; i++) {
+			loadingAnime[i].classList.remove("active");
+	        loadingAnime[i].classList.add("hide");
+	    }
 		
 		resultsDiv.innerHTML="";
 		
@@ -34,11 +370,11 @@ document.getElementById("startTesting-button").addEventListener("click", functio
 		data.forEach(rslt => {
 			
 			const testCaseDiv = document.createElement('div');
-			testCaseDiv.className = 'test-case ' + (rslt.result === 'Passed' ? 'pass' : 'fail');
+			testCaseDiv.className = 'test-case ' + (rslt.result === 'Pass' ? 'pass' : 'fail');
 			testCaseDiv.textContent = rslt.testCaseName;
 			testCaseDiv.dataset.target = rslt.testCaseNumber;
 			
-			if (rslt.result === 'Passed') {
+			if (rslt.result === 'Pass') {
                 passedTestsDiv.appendChild(testCaseDiv);
             } else {
                 failedTestsDiv.appendChild(testCaseDiv);
@@ -46,8 +382,8 @@ document.getElementById("startTesting-button").addEventListener("click", functio
 			
 			
 			
-			let color = rslt.result === "Passed" ? "green" : "red";
-			let cssClass = rslt.result === "Passed" ? "pass" : "fail";
+			let color = rslt.result === "Pass" ? "green" : "red";
+			let cssClass = rslt.result === "Pass" ? "pass" : "fail";
 			
 			const resultDiv = document.createElement('div');
 			resultDiv.className = `test-result ${cssClass}`;
@@ -65,7 +401,9 @@ document.getElementById("startTesting-button").addEventListener("click", functio
 			`;
 			
 			resultsDiv.appendChild(resultDiv);
-	    })						
+	    });
+		showChartRepresentation();	
+							
 	})
 	.catch(error => {
         console.error("Error:", error);

@@ -11,21 +11,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.openqa.selenium.WebElement;
+
 import com.google.gson.Gson;
 import com.testing.FieldExtractor;
+import com.testing.TestCase;
 import com.testing.TestResult;
 
 /**
  * Servlet implementation class ValidationServlet
  */
-@WebServlet("/test")
-public class ValidationServlet extends HttpServlet {
+@WebServlet("/extractFields")
+public class FieldExtractingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * Default constructor. 
      */
-    public ValidationServlet() {
+    public FieldExtractingServlet() {
         // TODO Auto-generated constructor stub
     }
 
@@ -60,22 +63,25 @@ public class ValidationServlet extends HttpServlet {
 		try {
 			FieldExtractor fieldExtractor = new FieldExtractor();
 			
-			List<TestResult> testResults = fieldExtractor.extractFields(url); 
-			List<String> executedMethods = fieldExtractor.executedMethods;
+			List<TestCase> testCases = fieldExtractor.fetchVisibleFormFields(url); 
+//			List<String> executedMethods = fieldExtractor.executedMethods;
 
-			if (testResults == null || testResults.isEmpty()) {
+			if (testCases == null || testCases.isEmpty()) {
                 response.getWriter().write("[]"); // Return an empty array if no results
             } 
 			
 			else {
 				
-				HttpSession session = request.getSession();
-    			session.setAttribute("testResults", testResults);
-    			session.setAttribute("executedMethods", executedMethods);
-    			session.setAttribute("url", url);
-    			
-    			
-                String jsonResponse = new Gson().toJson(testResults);
+//				HttpSession session = request.getSession();
+//    			session.setAttribute("testResults", testResults);
+//    			session.setAttribute("executedMethods", executedMethods);
+//    			session.setAttribute("url", url);
+//    			
+    			HttpSession session = request.getSession();
+    			session.setAttribute("fieldExtractor", fieldExtractor);
+//    			session.setAttribute("extractedFields", testCases);
+				
+                String jsonResponse = new Gson().toJson(testCases);
                 response.getWriter().write(jsonResponse);
                 System.out.println(jsonResponse);
             }

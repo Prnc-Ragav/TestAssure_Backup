@@ -8,17 +8,17 @@ public class TestResult {
 	
     private String testCaseName;
     private String fieldType;
-    private String fieldName;
+//    private String fieldName;
     private String givenInput;
     private String expectedOutput;
     private String actualOutput;
     private String result;
 
-    public TestResult(String testCaseName, String fieldType, String fieldName, 
+    public TestResult(String testCaseName, String fieldType, 
                       String givenInput, String expectedOutput, String actualOutput, String result) {
         this.testCaseName = testCaseName;
         this.fieldType = fieldType;
-        this.fieldName = fieldName;
+//        this.fieldName = fieldName;
         this.givenInput = givenInput;
         this.expectedOutput = expectedOutput;
         this.actualOutput = actualOutput;
@@ -34,7 +34,6 @@ public class TestResult {
         		+ "\"testCaseNumber\": \"" + testCaseNumber + "\","
                 + "\"testCaseName\": \"" + testCaseName + "\","
                 + "\"fieldType\": \"" + fieldType + "\","
-                + "\"fieldName\": \"" + fieldName + "\","
                 + "\"givenInput\": \"" + givenInput + "\","
                 + "\"expectedOutput\": \"" + expectedOutput + "\","
                 + "\"actualOutput\": \"" + actualOutput + "\","
@@ -58,13 +57,13 @@ public class TestResult {
 		this.fieldType = fieldType;
 	}
 
-	public String getFieldName() {
-		return fieldName;
-	}
-
-	public void setFieldName(String fieldName) {
-		this.fieldName = fieldName;
-	}
+//	public String getFieldName() {
+//		return fieldName;
+//	}
+//
+//	public void setFieldName(String fieldName) {
+//		this.fieldName = fieldName;
+//	}
 
 	public String getGivenInput() {
 		return givenInput;

@@ -32,7 +32,6 @@ public class ExcelGenerator {
                 Row row = sheet.createRow(rowNum++);
                 row.createCell(0).setCellValue(result.getTestCaseName());
                 row.createCell(1).setCellValue(result.getFieldType());
-                row.createCell(2).setCellValue(result.getFieldName());
                 row.createCell(3).setCellValue(result.getGivenInput());
                 row.createCell(4).setCellValue(result.getExpectedOutput());
                 row.createCell(5).setCellValue(result.getActualOutput());

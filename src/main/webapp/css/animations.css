@@ -1,0 +1,764 @@
+/* Main Animation */
+
+.welcome-animation-container {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+    
+/* Welcome animation */
+.welcome-animation {
+ 	font-size: 3rem;
+  	animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+	from { transform: translateY(0); }
+	to { transform: translateY(-15px); }
+}
+
+
+/* Main Page Loading */
+
+.loading-animation-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.loading-animation-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.content-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-line {
+  height: 12px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg, 
+    #f0f0f0 0%, 
+    #e0e0e0 20%, 
+    #f0f0f0 40%, 
+    #e0e0e0 60%,
+    #f0f0f0 80%
+  );
+  background-size: 200% 100%;
+  /* animation: shimmer 1.5s linear infinite; */
+  position: relative;
+  transform-origin: left center;
+}
+
+/* .content-line:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150px;
+  height: 100%;
+  width: 150px;
+  background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.8) 50%, transparent 100%);
+  animation: shimmerHighlight 1.5s infinite;
+} */
+
+.content-line:nth-child(2) {
+  width: 100%;
+  animation: shimmer 1.5s linear infinite, scaleLine2 3.5s ease-in-out infinite;
+}
+
+.content-line:nth-child(3) {
+  width: 95%;
+  animation: shimmer 1.5s linear infinite, scaleLine3 4.5s ease-in-out infinite;
+}
+
+.content-line.medium {
+  width: 75%;
+  animation: shimmer 1.5s linear infinite, scaleMedium 5s ease-in-out infinite;
+}
+
+.content-line.short {
+  width: 50%;
+  animation: shimmer 1.5s linear infinite, scaleShort 3s ease-in-out infinite;
+}
+
+/* Animations that scale width while keeping left side fixed */
+@keyframes scaleTitle {
+  0%, 100% { width: 90%; }
+  50% { width: 95%; }
+}
+
+@keyframes scaleLine2 {
+  0%, 100% { width: 100%; }
+  50% { width: 92%; }
+}
+
+@keyframes scaleLine3 {
+  0%, 100% { width: 95%; }
+  50% { width: 85%; }
+}
+
+@keyframes scaleMedium {
+  0%, 100% { width: 75%; }
+  50% { width: 83%; }
+}
+
+@keyframes scaleShort {
+  0%, 100% { width: 50%; }
+  50% { width: 65%; }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes shimmerHighlight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(100% + 150px));
+  }
+}
+
+
+
+/* Main Input Error Loading */
+.inputError-animation {
+	width:99%;
+	background-color: #fff8f8;
+	border: 1px solid #ffe8e8;
+	border-radius: 8px;
+	padding: 20px;
+	margin: 20px auto;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+  	animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+	box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* Emoji Container */
+.inputError-emoji-container {
+  font-size: 50px;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+/* Main Sad Emoji */
+.sad-emoji {
+  animation: bobble 2s ease infinite;
+  display: inline-block;
+  position: relative;
+}
+
+/* Tear Drops */
+.tear-drop {
+  position: absolute;
+  font-size: 15px;
+  color: #4b9ee6;
+  animation: tear-fall 2s ease infinite;
+  opacity: 0;
+}
+
+.tear-drop-left {
+  left: 10px;
+  top: 25px;
+}
+
+.tear-drop-right {
+  right: 10px;
+  top: 25px;
+  animation-delay: 0.5s;
+}
+
+/* Eyes Blinking */
+.eyes-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  font-size: 60px;
+  animation: blink 4s ease infinite;
+  opacity: 0;
+}
+
+/* Error Message */
+.error-message {
+  margin-bottom: 10px;
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+.error-text {
+  color: #777;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Animations */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes bobble {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes tear-fall {
+  0% { transform: translateY(0); opacity: 0; }
+  30% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(30px); opacity: 0; }
+}
+
+@keyframes blink {
+  0%, 95%, 100% { opacity: 0; }
+  5%, 90% { opacity: 1; }
+}
+
+
+
+
+
+
+/* Process Error Animation */
+
+.error-icon {
+  font-size: 2.5rem;
+  color: #e74c3c;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+
+.retry-btn {
+  margin-top: 15px;
+  padding: 8px 16px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.retry-btn:hover {
+  background-color: #c0392b;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Passed and Failed Test Case Landing page animation*/
+
+.card {
+	width: 100%;
+    height: 100%;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+	opacity: 0;
+	transform: translateY(20px);
+	animation: fadeIn 0.7s ease forwards;
+}
+
+.card.passed {
+	background-color: #f0fdf4;
+	border: 1px solid #dcfce7;
+}
+
+.card.failed {
+	background-color: #fef2f2;
+	border: 1px solid #fee2e2;
+	animation-delay: 0.15s;
+}
+
+/* Emoji Styles */
+.emoji-container {
+	font-size: 60px;
+	margin-bottom: 16px;
+}
+
+.checkmark-emoji {
+	animation: bounce 1s infinite;
+}
+
+.celebration-emojis {
+	font-size: 40px;
+	margin-bottom: 8px;
+	animation: pulse 2s infinite;
+}
+
+.crossmark {
+	animation: ping 1s infinite alternate;
+}
+
+.worried-emojis {
+	font-size: 40px;
+	margin-bottom: 8px;
+}
+
+.worried-emoji {
+	display: inline-block;
+}
+
+.worried-emoji:nth-child(1) {
+	animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) infinite;
+}
+
+.worried-emoji:nth-child(2) {
+	animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) infinite 0.1s;
+}
+
+.worried-emoji:nth-child(3) {
+	animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) infinite 0.2s;
+}
+
+/* Text Styles */
+.title {
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+
+.title.passed {
+	color: #15803d;
+}
+
+.title.failed {
+	color: #b91c1c;
+}
+
+.message {
+	text-align: center;
+}
+
+.message.passed {
+	color: #16a34a;
+}
+
+.message.failed {
+	color: #dc2626;
+}
+
+ /* Animations */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes ping {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0) rotate(0);
+  }
+  25% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+  75% {
+    transform: translateX(5px) rotate(5deg);
+  }
+}
+
+
+
+
+
+/* Passed and Failed TestCases Loading Animation */
+.testCases-loading-container {
+	width:100%;
+	height:100%;
+	background-color: white;
+	border-radius: 10px;
+	padding: 20px;
+	/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+/* Happy expectation animation */
+.happy-loading {
+  display: flex;
+  font-size: 30px;
+}
+
+.happy-emoji {
+	display : inline-block;
+	animation: bounce 1s infinite alternate;
+	margin: 0 5px;
+	transform-origin: bottom;
+}
+
+.happy-emoji:nth-child(1) { animation-delay: 0.0s; }
+.happy-emoji:nth-child(2) { animation-delay: 0.2s; }
+.happy-emoji:nth-child(3) { animation-delay: 0.4s; }
+.happy-emoji:nth-child(4) { animation-delay: 0.6s; }
+.happy-emoji:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    transform: translateY(-15px) scale(1.1);
+  }
+}
+
+.anxious-loading {
+  display: flex;
+  font-size: 30px;
+}
+
+.anxious-emoji {
+  animation: shake 0.5s infinite;
+  margin: 0 5px;
+  transform-origin: center;
+}
+
+.anxious-emoji:nth-child(1) { animation-delay: 0.0s; }
+.anxious-emoji:nth-child(2) { animation-delay: 0.1s; }
+.anxious-emoji:nth-child(3) { animation-delay: 0.2s; }
+.anxious-emoji:nth-child(4) { animation-delay: 0.3s; }
+.anxious-emoji:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+
+
+
+
+
+
+
+
+
+/* Curiously waiting for Chat Animation */
+
+.curious-waiting-container {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 34px);
+  /* background-color: white; */
+  border-radius: 16px;
+  /* box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.emoji-scene {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-emoji {
+  font-size: 50px;
+  position: relative;
+  animation: peek 3s infinite;
+}
+
+.thinking-bubble {
+  position: absolute;
+  top: -30px;
+  right: -20px;
+  font-size: 24px;
+  opacity: 0;
+  animation: think 3s infinite;
+}
+
+.question-marks {
+  position: absolute;
+  top: 20px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.question-mark {
+  font-size: 24px;
+  margin: 0 5px;
+  opacity: 0;
+  animation: questionPop 3s infinite;
+}
+
+.question-mark:nth-child(1) {
+  animation-delay: 0.5s;
+}
+
+.question-mark:nth-child(2) {
+  animation-delay: 1s;
+}
+
+.question-mark:nth-child(3) {
+  animation-delay: 1.5s;
+}
+
+.dots-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ddd;
+  border-radius: 50%;
+  margin: 0 6px;
+  animation: dotBounce 1.5s infinite;
+}
+
+.dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.message {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #888;
+  opacity: 0;
+  animation: fadeInOut 3s infinite 1s;
+}
+
+@keyframes peek {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-5px) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-5px) rotate(5deg);
+  }
+}
+
+@keyframes think {
+  0%, 20%, 100% {
+    opacity: 0;
+  }
+  40%, 80% {
+    opacity: 1;
+  }
+}
+
+@keyframes questionPop {
+  0%, 15%, 100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  30%, 70% {
+    opacity: 1;
+    transform: translateY(-10px);
+  }
+  80% {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes dotBounce {
+  0%, 100% {
+    transform: translateY(0);
+    background-color: #ddd;
+  }
+  50% {
+    transform: translateY(-10px);
+    background-color: #888;
+  }
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+
+
+
+/* Chart Part Loading Animation */
+
+.dot-pulse-container {
+	width:100%;
+	height: calc(100% - 34px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 15px;
+	padding: 20px;
+	background-color: white;
+	border-radius: 8px;
+	/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}
+
+.dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #4287f5;
+}
+
+.dot-1 {
+  animation: pulse 1.5s infinite;
+}
+
+.dot-2 {
+  animation: pulse 1.5s infinite;
+  animation-delay: 0.3s;
+}
+
+.dot-3 {
+  animation: pulse 1.5s infinite;
+  animation-delay: 0.6s;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(0.5);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+.active{
+	display : flex;
+}
+
+.hide {
+	display: none;
+}
+
+
+
+
+
+
+
