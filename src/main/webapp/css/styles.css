@@ -44,9 +44,13 @@ button {
     margin-bottom: 20px;
 }
 
+.logo-img-div {
+	height:40px;
+	width:50px;
+}
+
 .logo-img {
-    /* height:40px; */
-    width:40px;
+   width:100%;
 }
 
 #side-bar nav ul {
@@ -164,7 +168,7 @@ button {
     z-index: 1000;
 }
 
-.modal {
+.overlay-div {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -176,6 +180,7 @@ button {
     min-width: 600px;
     max-height: 600px;
     overflow: auto;
+    scrollbar-width: thin;
 }
 
 .test-table {
@@ -194,7 +199,28 @@ button {
     background-color: #f4f4f4;
 }
 
-/* .base-content {
+
+
+/* tbody input {
+    padding: 5px;
+    border: 2px solid;
+    border-radius: 5px;
+    margin-top : 5px;
+}
+
+tbody button {
+    padding: 5px;
+    margin-left: 10px;
+}
+
+.overlay-div > button {
+	margin-top : 10px;
+	padding : 5px;
+} */
+
+
+
+.base-content {
     padding: 20px;
 }
 
@@ -226,13 +252,21 @@ button {
     margin-bottom: 5px;
 }
 
+.input-row input {
+	padding: 5px;
+}
+
 .input-row.initial {
     background-color: #f8f8f8;
+    border-radius: 5px; /* Makes it visually neat */
+    display: flex;
+    align-items: center;
 }
 
 .input-row.initial input {
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
+    background-color: transparent; /* Ensures input itself is clean */
+    border: none; /* Removes extra borders */
+    outline: none; /* Prevents focus outline */
 }
 
 .remove-input {
@@ -246,7 +280,7 @@ button {
 
 .input-row.initial .remove-input {
     display: none;
-} */
+} 
 
 
 

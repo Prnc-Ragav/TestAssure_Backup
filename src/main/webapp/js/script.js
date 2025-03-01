@@ -69,7 +69,7 @@ document.getElementById("startTesting-button").addEventListener('click', functio
 
 
 
-let testCases = [];
+/*let testCases = [];
 
 function fetchTestCases() {
 	
@@ -79,16 +79,16 @@ function fetchTestCases() {
         method: "POST",
 		headers: { "Content-Type": "application/x-www-form-urlencoded" },
 		body: "url=" + encodeURIComponent(url)
-        /*body: new URLSearchParams({ url })*/
+        body: new URLSearchParams({ url })
     })
     .then(response => response.json())
     .then(data => {
         testCases = data;
         renderTestCases();
     });
-}
+}*/
 
-function renderTestCases() {
+/*function renderTestCases() {
     let tableBody = document.querySelector("#testTable tbody");
     tableBody.innerHTML = ""; // Clear previous content
 
@@ -128,14 +128,11 @@ function renderTestCases() {
     });
 
     showModal();
-}
+}*/
 
 
 
-
-
-
-let userInputs = {};
+/*let userInputs = {};
 
 function saveAndClose() {
     userInputs = {}; // Reset stored inputs
@@ -158,7 +155,7 @@ function saveAndClose() {
 
     console.log("Saved User Inputs:", userInputs); // Debugging		//JSON.stringify(userInputs, null, 2)
     hideModal();
-}
+}*/
 
 /*function saveAndClose() {
     userInputs = {}; // Reset stored inputs
@@ -190,6 +187,162 @@ function saveAndClose() {
     
 	hideModal();
 }*/
+
+
+
+
+
+
+
+
+
+
+
+
+// Map to store test cases and their input values
+let testCaseMap = new Map();
+let testCases = []; // Holds test cases fetched from the servlet
+let userInputs = {}; // Stores final inputs
+
+function showModal() {
+    document.getElementById('overlay').style.display = 'block';
+}
+
+function hideModal() {
+    document.getElementById('overlay').style.display = 'none';
+}
+
+// Fetch test cases from the servlet
+function fetchTestCases() {
+    let url = document.getElementById("inputURL").value;
+
+    fetch("extractFields", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "url=" + encodeURIComponent(url)
+    })
+    .then(response => response.json())
+    .then(data => {
+        testCases = data;
+        renderTestCases();
+    })
+    .catch(error => console.error("Error fetching test cases:", error));
+}
+
+// Function to create an input row dynamically
+function createInputRow(value = '', isInitial = false) {
+    const row = document.createElement('div');
+    row.className = `input-row ${isInitial ? 'initial' : ''}`;
+
+    // Handle placeholders
+    let placeholderText = isInitial
+        ? (value.trim() === '' ? "empty value" : '')  // Predefined empty → "empty value"
+        : "give your value to test";                 // User input → "give your value to test"
+
+    row.innerHTML = `
+        <input type="text" value="${value}" placeholder="${placeholderText}" ${isInitial ? 'readonly' : ''}>
+        ${isInitial ? '' : '<button class="remove-input" onclick="removeInputValue(this)">×</button>'}
+    `;
+    return row;
+}
+
+// Add input value dynamically
+function addInputValue(testCaseName) {
+    const safeId = testCaseName.replace(/[^a-zA-Z0-9]/g, '_');
+    const inputContainer = document.getElementById(`inputs_${safeId}`);
+
+    if (inputContainer) {
+        let existingValues = new Set(
+            Array.from(inputContainer.querySelectorAll("input"))
+                .map(input => input.value.trim())
+        );
+
+        // Ensure at least one user input can be added, even if there is an "empty value"
+        if (!existingValues.has("give your value to test")) {
+            inputContainer.appendChild(createInputRow());
+        }
+    }
+}
+
+// Remove input value
+function removeInputValue(button) {
+    const row = button.parentElement;
+    if (!row.classList.contains('initial')) {
+        row.remove();
+    }
+}
+
+// Save user inputs and send them to the servlet
+function saveAndClose() {
+    userInputs = {}; // Reset stored inputs
+
+    testCases.forEach((test) => {
+        let safeId = test.testCaseName.replace(/[^a-zA-Z0-9]/g, '_');
+        let inputContainer = document.getElementById(`inputs_${safeId}`);
+        let inputValues = Array.from(inputContainer.querySelectorAll("input"))
+            .map(input => input.value.trim())
+            .filter((value, index, self) => self.indexOf(value) === index); // Prevent duplicates
+
+        // Ensure at least "empty value" is stored if no inputs are given
+        userInputs[test.testCaseName] = inputValues.length > 0 ? inputValues : ["empty value"];
+    });
+
+    console.log("Saved User Inputs:", userInputs);
+    hideModal();
+}
+
+// Render test cases dynamically from servlet response
+function renderTestCases() {
+    let tableBody = document.querySelector("#testTable tbody");
+    tableBody.innerHTML = ""; // Clear previous content
+
+    testCases.forEach(({ testCaseName, predefinedInputs }) => {
+        const safeId = testCaseName.replace(/[^a-zA-Z0-9]/g, '_');
+        testCaseMap.set(testCaseName, predefinedInputs);
+
+        const row = document.createElement("tr");
+
+        let testCaseCell = document.createElement("td");
+        testCaseCell.textContent = testCaseName;
+        row.appendChild(testCaseCell);
+
+        let inputCell = document.createElement("td");
+        let inputContainer = document.createElement("div");
+        inputContainer.className = "input-values";
+        inputContainer.id = `inputs_${safeId}`;
+
+        predefinedInputs.forEach(input => {
+            inputContainer.appendChild(createInputRow(input, true));
+        });
+
+        inputCell.appendChild(inputContainer);
+        row.appendChild(inputCell);
+
+        let actionCell = document.createElement("td");
+        let addButton = document.createElement("button");
+        addButton.className = "add-input";
+        addButton.textContent = "+ Add Input";
+        addButton.onclick = function () {
+            addInputValue(testCaseName);
+        };
+        actionCell.appendChild(addButton);
+        row.appendChild(actionCell);
+
+        tableBody.appendChild(row);
+    });
+
+    showModal();
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -240,7 +393,7 @@ function showChartRepresentation() {
 	                labels: pieLabels,
 	                datasets: [{
 	                    data: pieValues,
-	                    backgroundColor: ["green", "red", "orange", "purple", "blue"]
+	                    backgroundColor: ["#00ab41", "#FF474C", "orange", "purple", "blue"]
 	                }]
 	            }
 	        });
@@ -266,7 +419,7 @@ function showChartRepresentation() {
 	                datasets: [{
 	                    label: 'Field Type Count',
 	                    data: fieldTypeValues,
-	                    backgroundColor: "blue"
+	                    backgroundColor: "#45b6fe"
 	                }]
 	            },
 				options: {
