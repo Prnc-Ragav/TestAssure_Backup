@@ -1,7 +1,11 @@
 package com.testing;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +14,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpSession;
 
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.UnhandledAlertException;
@@ -19,7 +26,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -27,6 +36,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class TestCase {
+	
+	HttpSession session;
 	
 	private String testCaseName;
     private List<String> predefinedInputs;
@@ -38,6 +49,11 @@ public class TestCase {
 	private List<String> executedMethods = new ArrayList<>();
 	private List<String> mainMethod = new ArrayList<>();
 
+	private Map<String, String> screenshotMap = new LinkedHashMap<>();
+	
+	
+	
+	
     public TestCase(WebDriver driver) {
         this.driver = driver;
     }
@@ -123,8 +139,11 @@ public class TestCase {
     
     
     
-    public List<TestResult> runTests(Map<String, WebElement> testCaseMap, Map<String, List<String>> inputs) {
-        List<TestResult> testResults = new ArrayList<>();
+    public List<TestResult> runTests(Map<String, WebElement> testCaseMap, Map<String, List<String>> inputs, HttpSession session) {
+        
+    	this.session = session;
+    	
+    	List<TestResult> testResults = new ArrayList<>();
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
         // JavaScript to detect error messages (including alert messages first)
@@ -377,6 +396,45 @@ public class TestCase {
     
     
     
+    private String takeScreenshot(String screenshotId) {
+        try {
+            File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            String screenshotDirectory = "screenshots/"; // Adjust path as needed
+            File destinationFile = new File(screenshotDirectory + screenshotId + ".png");
+
+            Files.createDirectories(destinationFile.toPath().getParent());
+            Files.copy(screenshot.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+            return destinationFile.getAbsolutePath(); // Return screenshot path
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    private void handleFailedTestCase(TestResult result) {
+        if (result.getResult().equals("Fail")) {
+            String uniqueKey = UUID.randomUUID().toString();
+            result.setScreenshotKey(uniqueKey); // Store key in TestResult
+
+            String screenshotPath = takeScreenshot(uniqueKey);
+            if (screenshotPath != null) {
+                // Get existing session-based screenshot map or create a new one
+                Map<String, String> screenshotMap = (Map<String, String>) session.getAttribute("screenshotMap");
+                if (screenshotMap == null) {
+                    screenshotMap = new LinkedHashMap<>();
+                }
+                
+                // Store screenshot path with its unique key
+                screenshotMap.put(uniqueKey, screenshotPath);
+                session.setAttribute("screenshotMap", screenshotMap);
+            }
+        }
+    }
+    
+    
+    
+    
     
     
     
@@ -445,7 +503,11 @@ public class TestCase {
         	
         System.out.println("End. Error Message : "+ errorMessage);
         
-        return new TestResult(testCaseName, "text", input, "Error Message Expected", passed ? errorMessage  : "No error", passed ? "Pass" : "Fail");
+        TestResult result1 = new TestResult(testCaseName, "text", input, "Error Message Expected", passed ? errorMessage  : "No error", passed ? "Pass" : "Fail");
+        
+        handleFailedTestCase(result1);
+        
+        return result1;
     }
 
     public TestResult testNumberField(String testCaseName, WebElement field, String input, JavascriptExecutor js, String script) {
@@ -483,8 +545,31 @@ public class TestCase {
         // Step 2: Set the error message (alert has priority over inline errors)
         String errorMessage = (alertMessage != null) ? alertMessage : 
                               (!errors.isEmpty() ? errors.get(0) : "No error detected");
+        
+        
+        TestResult result1 = new TestResult(testCaseName, "number", input, "Error Message Expected", errorMessage, passed ? "Pass" : "Fail");
 
-        return new TestResult(testCaseName, "number", input, "Error Message Expected", errorMessage, passed ? "Pass" : "Fail");
+//        if (result1.getResult().equals("Fail")) {
+//        	String uniqueKey = UUID.randomUUID().toString();
+//            result1.setScreenshotKey(uniqueKey); // Store key in TestResult
+//
+//            String screenshotPath = takeScreenshot(uniqueKey);
+//            if (screenshotPath != null) {
+//                // Get existing session-based screenshot map or create a new one
+//                Map<String, String> screenshotMap = (Map<String, String>) session.getAttribute("screenshotMap");
+//                if (screenshotMap == null) {
+//                    screenshotMap = new LinkedHashMap<>();
+//                }
+//                
+//                // Store screenshot path with its unique key
+//                screenshotMap.put(uniqueKey, screenshotPath);
+//                session.setAttribute("screenshotMap", screenshotMap);
+//            }
+//        }  
+        
+        handleFailedTestCase(result1);
+
+        return result1;
     }
 
     public TestResult testEmailField(String testCaseName, WebElement field, String input, JavascriptExecutor js, String script) {
@@ -522,8 +607,12 @@ public class TestCase {
         // Step 2: Set the error message (alert has priority over inline errors)
         String errorMessage = (alertMessage != null) ? alertMessage : 
                               (!errors.isEmpty() ? errors.get(0) : "No error detected");
-
-        return new TestResult(testCaseName, "email", input, "Error Message Expected", errorMessage, passed ? "Pass" : "Fail");
+        
+        TestResult result1 = new TestResult(testCaseName, "email", input, "Error Message Expected", errorMessage, passed ? "Pass" : "Fail");
+        
+        handleFailedTestCase(result1);
+        
+        return result1;
     }
 
     public TestResult testSelectField(String testCaseName, WebElement field, String input) {

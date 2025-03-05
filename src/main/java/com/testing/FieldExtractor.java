@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -25,9 +27,9 @@ public class FieldExtractor {
 	public List<WebElement> fetchedFields;
 	public Map<String, WebElement> testCaseFieldMap = new LinkedHashMap<>();
 	
-	public List<TestResult> runTests(Map<String, WebElement> testCaseAndField, Map<String, List<String>> inputs){
+	public List<TestResult> runTests(Map<String, WebElement> testCaseAndField, Map<String, List<String>> inputs, HttpSession session){
 		TestCase testCases = new TestCase(driver);
-        List<TestResult> results = testCases.runTests(testCaseAndField, inputs);
+        List<TestResult> results = testCases.runTests(testCaseAndField, inputs, session);
         
         executedMethods = testCases.getExecutedMethods();
 

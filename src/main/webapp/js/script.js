@@ -465,7 +465,7 @@ function animateCounter(id, targetValue, color) {
         } else {
             clearInterval(interval);
         }
-    }, 100); 
+    }, 10); 
 }
 
 
@@ -543,6 +543,14 @@ document.getElementById("startTesting-button").addEventListener("click", functio
 			resultDiv.style = `border-left: 5px solid ${color}; padding: 10px`;
 			resultDiv.id = rslt.testCaseNumber;
 			
+			console.log("===========>",rslt.result === "Fail");
+			console.log("----------->",rslt.screenshotKey);
+			// "View Snap" Link only for failed test cases
+            let snapLink = (rslt.result === "Fail" && rslt.screenshotKey)
+                ? `<a href="#" class="view-snap" onclick="openScreenshotPopup('${rslt.screenshotKey}', '${rslt.testCaseName}')">View Snap</a>`
+                : "";
+			
+			
 			resultDiv.innerHTML += `
 		            <strong>Test Case:</strong> ${rslt.testCaseName}<br>
 		            <strong>Field Type:</strong> ${rslt.fieldType} (${rslt.fieldName})<br>
@@ -550,6 +558,7 @@ document.getElementById("startTesting-button").addEventListener("click", functio
 		            <strong>Expected Output:</strong> ${rslt.expectedOutput}<br>
 		            <strong>Actual Output:</strong> ${rslt.actualOutput}<br>
 		            <strong>Result:</strong> <span style="color: ${color}; font-weight: bold;">${rslt.result}</span>
+					${snapLink}
 		        </div>
 			`;
 			
@@ -624,3 +633,77 @@ document.addEventListener('click', function (event) {
         }
     });
 });*/
+
+
+
+
+// Function to open the front-layer div with the screenshot
+function openScreenshotPopup(screenshotKey, testCaseName) {
+    let popupDiv = document.getElementById("screenshotPopup");
+    let popupContent = document.getElementById("screenshotContent");
+
+    // Update popup content
+    popupContent.innerHTML = `
+        <h3>${testCaseName}</h3>
+        <img src="viewScreenshot?screenshotId=${screenshotKey}" alt="Screenshot" style="max-width: 100%; height: auto; border: 1px solid #ccc;">
+        <br>
+        <button onclick="downloadScreenshot('${screenshotKey}')">Download</button>
+        <button onclick="closeScreenshotPopup()">Close</button>
+    `;
+
+    popupDiv.style.display = "block"; // Show the popup
+}
+
+// Function to close the popup
+function closeScreenshotPopup() {
+    document.getElementById("screenshotPopup").style.display = "none";
+}
+
+// Function to trigger the screenshot download
+function downloadScreenshot(screenshotKey) {
+    window.location.href = `downloadScreenshot?screenshotId=${screenshotKey}`;
+}
+
+
+
+
+/*// Open Screenshot Popup
+function openScreenshotPopup(screenshotKey, testCaseName) {
+    let popupDiv = document.createElement("div");
+    popupDiv.id = "screenshotPopup";
+    popupDiv.className = "popup";
+
+    popupDiv.innerHTML = `
+        <div class="popup-content">
+            <span class="close-btn" onclick="closeScreenshotPopup()">&times;</span>
+            <h2>${testCaseName} - Screenshot</h2>
+            <img src="viewScreenshot?screenshotKey=${screenshotKey}" alt="Test Screenshot">
+            <button onclick="downloadScreenshot('${screenshotKey}')">Download</button>
+        </div>
+    `;
+
+    document.body.appendChild(popupDiv);
+}
+
+// Close Screenshot Popup
+function closeScreenshotPopup() {
+    let popupDiv = document.getElementById("screenshotPopup");
+    if (popupDiv) {
+        document.body.removeChild(popupDiv);
+    }
+}
+
+// Download Screenshot
+function downloadScreenshot(screenshotKey) {
+    if (!screenshotKey) {
+        alert("Screenshot key is missing!");
+        return;
+    }
+
+    let downloadLink = document.createElement("a");
+    downloadLink.href = `downloadScreenshot?screenshotKey=${encodeURIComponent(screenshotKey)}`;
+    downloadLink.download = `Test_Screenshot_${screenshotKey}.png`;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}*/

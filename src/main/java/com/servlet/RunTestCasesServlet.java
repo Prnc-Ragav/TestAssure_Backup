@@ -47,6 +47,8 @@ public class RunTestCasesServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		HttpSession session = request.getSession(true);
+		
 		response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
@@ -70,11 +72,10 @@ public class RunTestCasesServlet extends HttpServlet {
             FieldExtractor fieldExtractor = (FieldExtractor) request.getSession().getAttribute("fieldExtractor");
 //            List<TestCase> extractedFields = (List<TestCase>) request.getSession().getAttribute("extractedFields");
     		
-            List<TestResult> results = fieldExtractor.runTests(fieldExtractor.testCaseFieldMap, allInputs);
+            List<TestResult> results = fieldExtractor.runTests(fieldExtractor.testCaseFieldMap, allInputs, session);
             
 //            getServletContext().setAttribute("testResults", results);
             
-            HttpSession session = request.getSession();
 			session.setAttribute("testResults", results);
             
             System.out.println("=================>Results"+results);

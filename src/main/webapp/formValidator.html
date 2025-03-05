@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/headerAnimation.css" rel="stylesheet">
+    <link href="css/animations.css" rel="stylesheet">    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="side-bar">
+        <div class="logo">
+        	<div class ="logo-img-div">
+        		<img class="logo-img" src="images/logo.png" alt="LOGO">
+        	</div>
+            <div><h2>Dashboard</h2></div>
+        </div>
+        <nav>
+            <ul>
+                <li>
+                    <a href="">Form Validator</a>
+                </li>
+                <li>
+                    <a href="">Broken Access Control</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <header>
+        	<img id="menu-icon" src="images/menuBar.png" alt="menu">
+
+            <!-- Form SVG -->
+            <svg class="form-container" viewBox="0 0 24 24" fill="white">
+                <path d="M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M19,19H5V5h14V19z"/>
+                <path d="M7,7h10v2H7V7z"/>
+                <path d="M7,11h10v2H7V11z"/>
+                <path d="M7,15h7v2H7V15z"/>
+            </svg>
+
+            <!-- Magnifying Glass SVG -->
+            <svg class="magnifier" viewBox="0 0 24 24" fill="white">
+                <path d="M15.5,14h-0.79l-0.28-0.27C15.41,12.59,16,11.11,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5S5.91,16,9.5,16
+                c1.61,0,3.09-0.59,4.23-1.57L14,14.71v0.79l5,4.99L20.49,19L15.5,14z M9.5,14C7.01,14,5,11.99,5,9.5S7.01,5,9.5,5S14,7.01,14,9.5
+                S11.99,14,9.5,14z"/>
+            </svg>
+            
+            <!-- Checkmark SVG -->
+            <svg class="checkmark" viewBox="0 0 24 24" fill="#4cc9f0">
+                <path d="M9,16.17L4.83,12l-1.42,1.41L9,19L21,7l-1.41-1.41L9,16.17z"/>
+            </svg>
+            
+            <!-- Error X SVG -->
+            <svg class="error-x" viewBox="0 0 24 24" fill="#ef476f">
+                <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41z"/>
+            </svg>
+
+            <div class="particles-container" id="particles"></div>
+            
+            <div class="wave"></div>
+            <div class="wave"></div>
+            
+            <div class="pulse"></div>
+            
+            <!-- Floating shapes -->
+            <div class="floating-shape" style="width: 80px; height: 80px; top: 20%; left: 10%; animation: floatAround 8s ease-in-out infinite;"></div>
+            <div class="floating-shape" style="width: 60px; height: 60px; top: 60%; left: 80%; animation: floatAround 12s ease-in-out infinite 1s;"></div>
+            <div class="floating-shape" style="width: 40px; height: 40px; top: 30%; left: 70%; animation: floatAround 10s ease-in-out infinite 2s;"></div>
+            
+            <div class="logo-container">
+            <img class="text-logo" src="images/textLogo.png">
+                <!-- <div class="logo-text">
+                    <span class="test">Test</span><span class="assure">Assure</span>
+                </div> -->
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="dg">
+                <h1>New Scan</h1>
+                <div class="scan-div">
+                    <input type="text" name="url" id="inputURL" placeholder="Enter the URL here">
+                    
+                    <div class="action-buttons-div">
+                    	<button id="fetch-fields" class="btn">Fetch Fields</button>
+                    	<button id="startTesting-button" class="btn">Start Testing</button>
+                    </div>
+                    
+                    
+                    <div id="overlay" class="overlay">
+	                    <div class="overlay-div">
+	                        <h2>Test Cases</h2>
+	                        <table class="test-table" id="testTable">
+	                            <thead>
+	                                <tr>
+	                                    <th>Test Case Name</th>
+	                                    <th>Input Values</th>
+	                                    <th>Actions</th>
+	                                </tr>
+	                            </thead>
+	                            <tbody>
+	                                <!-- Rows will be populated by JavaScript -->
+	                            </tbody>
+	                        </table>
+	                        <button id="save-testInputs-btn" onclick="saveAndClose()">Save</button>
+	                        <button onclick="hideModal()">Close</button>
+	                    </div>
+                	</div>                    
+                </div>
+            </div>
+            <div class="dg">
+                <h1>Statistics Report</h1>
+                <div class="statistics-div">
+                    <div class="statistic">
+                        <span class="testCaseStatistics" id="totalTestCount">00</span>
+                        <span>Total Test Case</span>
+                    </div>
+                    <div class="statistic">
+                        <span id="passedTestCount" class="testCaseStatistics" id="passedCases">00</span>
+                        <span>Passed</span>
+                    </div>
+					<div class="statistic">
+                        <span class="testCaseStatistics" id="failedTestCount">0</span>
+                        <span>Failed</span>
+                    </div>
+                </div>
+            </div>
+            <div class="dg testCase-results">
+                <h1>Test Cases</h1>
+                <div class="test-result-div">	
+                	<div id="test-result"></div>
+                	
+                	
+                	<!-- Screenshot Popup -->
+					<div id="screenshotPopup" style="
+					    display: none;
+					    position: fixed;
+					    top: 50%;
+					    left: 50%;
+					    transform: translate(-50%, -50%);
+					    background: white;
+					    padding: 20px;
+					    border-radius: 10px;
+					    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+					    z-index: 1000;
+					">
+					    <div id="screenshotContent"></div>
+					</div>
+                	
+                	
+                	<div class="welcome-animation-container active landing-anime">
+				        <div class="welcome-animation">👋</div>
+				        <h2>Welcome! Enter data to begin</h2>
+				    </div>
+				    
+				    <div class="loading-animation-card hide loading-anime">
+					   <div class="loading-animation-container">
+					     <div class="content-placeholder">
+					       <div class="content-line title"></div>
+					       <div class="content-line"></div>
+					       <div class="content-line"></div>
+					       <div class="content-line medium"></div>
+					       <div class="content-line short"></div>
+					     </div>
+					   </div>  
+					</div>
+					
+					<div class="inputError-animation hide input-error-anime">
+				      <div class="inputError-emoji-container">
+				        <span class="sad-emoji">😢</span>
+				        <span class="tear-drop tear-drop-left">💧</span>
+				        <span class="tear-drop tear-drop-right">💧</span>
+				        <span class="eyes-container">😔</span>
+				      </div>
+				      <div class="error-message">Invalid Input</div>
+				      <div class="error-text">Please provide a valid username and email address to continue.</div>
+				    </div>
+				    
+				    <div class="welcome-animation-container hide process-error-anime" id="error-container">
+				        <div class="error-icon">❌</div>
+				        <p>An error occurred while processing your data</p>
+				        <button class="retry-btn" id="retry-btn">Retry</button>
+				    </div>		
+        
+                </div>
+                <div class="download-buttons-div">
+                	<p>Download As :</p>
+                	<a href="downloadExcel">
+					    <button>Excel File</button>
+					</a>
+					<a href="downloadJavaFile">
+					    <button>Java File</button>
+					</a>
+                </div>
+            </div>
+            <div class="report-div">
+                <div class="rr">
+                	<h2>Passed Test Cases</h2>
+                	<div class="report-testCases">
+                		<div id="report-passedTestCases"></div>
+                		<div class="card passed active landing-anime">
+					        <div class="emoji-container">
+					          <span class="checkmark-emoji">✅</span>
+					        </div>
+					        <div class="celebration-emojis">
+					          <span>🎉</span> <!-- <span>🥳</span> <span>🎊</span> -->
+					        </div>
+					        <div class="title passed">Tests Passed!</div>
+					        <div class="message passed">All test cases completed successfully</div>
+					    </div>
+					    
+					    
+					    <div class="testCases-loading-container hide loading-anime">
+						    <div class="happy-loading">
+						      <div class="happy-emoji">😃</div>
+						      <div class="happy-emoji">😄</div>
+						      <div class="happy-emoji">🥳</div>
+						      <div class="happy-emoji">😁</div>
+						      <div class="happy-emoji">🤩</div>
+						    </div>
+						</div>
+                	</div>
+                </div>
+                <div class="rr">
+                	<h2>Failed Test Cases</h2>
+                	<div class="report-testCases">
+                		<div id="report-failedTestCases"></div>
+                		<div class="card failed active landing-anime">
+					        <div class="emoji-container">
+					          <span class="crossmark">❌</span>
+					        </div>
+					        <div class="worried-emojis landing-anime">
+					          <!-- <span class="worried-emoji">😱</span> 
+					          <span class="worried-emoji">😵</span> --> 
+					          <span class="worried-emoji">🤔</span>
+					        </div>
+					        <div class="title failed">Tests Failed!</div>
+					        <div class="message failed">Some test cases did not pass</div>
+						</div>
+						
+						<div class="testCases-loading-container hide loading-anime">
+						    <div class="anxious-loading">
+						      <div class="anxious-emoji">😰</div>
+						      <div class="anxious-emoji">😬</div>
+						      <div class="anxious-emoji">😨</div>
+						      <div class="anxious-emoji">🤯</div>
+						      <div class="anxious-emoji">😳</div>
+						    </div>
+						</div>
+    
+                	</div>
+                </div>
+                <div class="rr report-chart chart-container">
+                	<h2>Test Results Overview</h2>
+                	
+                	<div class="curious-waiting-container active landing-anime">
+					    <div class="emoji-scene">
+					      <div class="main-emoji">🧐</div>
+					      <div class="thinking-bubble">💭</div>
+					      <div class="question-marks">
+					        <div class="question-mark">❓</div>
+					        <div class="question-mark">❓</div>
+					        <div class="question-mark">❓</div>
+					      </div>
+					    </div>
+					    <div class="dots-container">
+					      <div class="dot"></div>
+					      <div class="dot"></div>
+					      <div class="dot"></div>
+					    </div>
+					</div>
+					
+					<div class="dot-pulse-container hide loading-anime">
+					    <div class="dot dot-1"></div>
+					    <div class="dot dot-2"></div>
+					    <div class="dot dot-3"></div>
+					</div>
+                	
+                	<div class="canvas-div hideCanvas">
+                		<canvas id="testResultsChart"></canvas>
+                	</div>
+    				
+                </div>
+                <div class="rr report-vulnerabilities chart-container">
+                	<h2>Test Case Breakdown</h2>
+                	
+                	<div class="curious-waiting-container active landing-anime">
+					    <div class="emoji-scene">
+					      <div class="main-emoji">🧐</div>
+					      <div class="thinking-bubble">💭</div>
+					      <div class="question-marks">
+					        <div class="question-mark">❓</div>
+					        <div class="question-mark">❓</div>
+					        <div class="question-mark">❓</div>
+					      </div>
+					    </div>
+					    <div class="dots-container">
+					      <div class="dot"></div>
+					      <div class="dot"></div>
+					      <div class="dot"></div>
+					    </div>
+					</div>
+					
+					<div class="dot-pulse-container hide loading-anime">
+					    <div class="dot dot-1"></div>
+					    <div class="dot dot-2"></div>
+					    <div class="dot dot-3"></div>
+					</div>
+                	
+                	<div class="canvas-div hideCanvas">
+    					<canvas id="categoryChart"></canvas>
+    				</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="js/script.js"></script>
+    <script src="js/headerAnimation.js"></script>
+</body>
+</html>

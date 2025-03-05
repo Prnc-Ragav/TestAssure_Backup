@@ -1,5 +1,10 @@
 package com.testing;
 
+import java.util.Map;
+import java.util.Set;
+
+import com.google.gson.Gson;
+
 public class TestResult {
 	
 	static int count=0;
@@ -13,7 +18,9 @@ public class TestResult {
     private String expectedOutput;
     private String actualOutput;
     private String result;
-
+    
+    private String screenshotKey;
+    
     public TestResult(String testCaseName, String fieldType, 
                       String givenInput, String expectedOutput, String actualOutput, String result) {
         this.testCaseName = testCaseName;
@@ -27,6 +34,15 @@ public class TestResult {
         this.count++;
         this.testCaseNumber=count;
     }
+    
+    
+    public void setScreenshotKey(String id) {
+    	this.screenshotKey = id;
+    }
+    
+    public String getScreenshotKey() {
+    	return this.screenshotKey;
+    }
 
     // Convert to JSON format
     public String toJSON() {
@@ -37,9 +53,37 @@ public class TestResult {
                 + "\"givenInput\": \"" + givenInput + "\","
                 + "\"expectedOutput\": \"" + expectedOutput + "\","
                 + "\"actualOutput\": \"" + actualOutput + "\","
-                + "\"result\": \"" + result + "\""
+                + "\"result\": \"" + result + "\","
+                + "\"screenshotKey\": \"" + (screenshotKey != null ? screenshotKey : null) + "\""
                 + "}";
     }
+
+//    // Convert to JSON with only screenshot KEYS
+//    public String toJSON() {
+//        return new Gson().toJson(new TestResultJSON(this));
+//    }
+//    
+//    private static class TestResultJSON {
+//        private int testCaseNumber;
+//        private String testCaseName;
+//        private String fieldType;
+//        private String givenInput;
+//        private String expectedOutput;
+//        private String actualOutput;
+//        private String result;
+//        private Set<String> screenshotKeys;
+//
+//        public TestResultJSON(TestResult result) {
+//            this.testCaseNumber = result.testCaseNumber;
+//            this.testCaseName = result.testCaseName;
+//            this.fieldType = result.fieldType;
+//            this.givenInput = result.givenInput;
+//            this.expectedOutput = result.expectedOutput;
+//            this.actualOutput = result.actualOutput;
+//            this.result = result.result;
+//            this.screenshotKeys = result.screenshotMap.keySet(); // Only send keys
+//        }
+//    }
 
 	public String getTestCaseName() {
 		return testCaseName;
