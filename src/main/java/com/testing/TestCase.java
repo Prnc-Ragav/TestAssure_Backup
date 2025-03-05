@@ -143,6 +143,8 @@ public class TestCase {
         
     	this.session = session;
     	
+    	putExecutedMethods();
+    	
     	List<TestResult> testResults = new ArrayList<>();
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
@@ -820,7 +822,109 @@ public class TestCase {
     
     
     
-    
+    public void putExecutedMethods() {
+    	String testTextField = "public void testTextField(String testCaseName, WebElement field, String input, JavascriptExecutor js, String script) {\n" +
+    			"    field.clear();\n" +
+    			"    field.sendKeys(input);\n" +
+    			"    field.sendKeys(Keys.ENTER);\n" +
+    			"\n" +
+    			"    String alertMessage = checkForAlertMessage();\n" +
+    			"    boolean passed = alertMessage != null;\n" +
+    			"\n" +
+    			"    List<String> errors = null;\n" +
+    			"    if (!passed) {\n" +
+    			"        try {\n" +
+    			"            errors = (List<String>) js.executeScript(script, field);\n" +
+    			"            passed = errors != null && !errors.isEmpty();\n" +
+    			"        } catch (UnhandledAlertException e) {\n" +
+    			"            Alert alert = driver.switchTo().alert();\n" +
+    			"            alertMessage = alert.getText();\n" +
+    			"            alert.accept();\n" +
+    			"            passed = true;\n" +
+    			"        }\n" +
+    			"    }\n" +
+    			"\n" +
+    			"    String errorMessage = (alertMessage != null) ? alertMessage : (errors != null && !errors.isEmpty() ? errors.get(0) : \"No error\");\n" +
+    			"\n" +
+    			"    TestResult result1 = new TestResult(testCaseName, \"text\", input, \"Error Message Expected\", passed ? errorMessage : \"No error\", passed ? \"Pass\" : \"Fail\");\n" +
+    			"    System.out.println(result1.toString());\n" +
+    			"}\n";
+
+    			String testEmailField = "public void testEmailField(String testCaseName, WebElement field, String input, JavascriptExecutor js, String script) {\n" +
+    			"    field.clear();\n" +
+    			"    field.sendKeys(input);\n" +
+    			"    field.sendKeys(Keys.ENTER);\n" +
+    			"\n" +
+    			"    String alertMessage = checkForAlertMessage();\n" +
+    			"    boolean passed = alertMessage != null;\n" +
+    			"\n" +
+    			"    List<String> errors = new ArrayList<>();\n" +
+    			"\n" +
+    			"    if (!passed) {\n" +
+    			"        try {\n" +
+    			"            errors = (List<String>) js.executeScript(script, field);\n" +
+    			"            passed = errors != null && !errors.isEmpty();\n" +
+    			"        } catch (UnhandledAlertException e) {\n" +
+    			"            Alert alert = driver.switchTo().alert();\n" +
+    			"            alertMessage = alert.getText();\n" +
+    			"            alert.accept();\n" +
+    			"            passed = true;\n" +
+    			"        }\n" +
+    			"    }\n" +
+    			"\n" +
+    			"    String errorMessage = (alertMessage != null) ? alertMessage : (!errors.isEmpty() ? errors.get(0) : \"No error detected\");\n" +
+    			"    TestResult result1 = new TestResult(testCaseName, \"email\", input, \"Error Message Expected\", errorMessage, passed ? \"Pass\" : \"Fail\");\n" +
+    			"    handleFailedTestCase(result1);\n" +
+    			"    System.out.println(result1.toString());\n" +
+    			"}\n";
+
+    			String testSelectField = "public void testSelectField(String testCaseName, WebElement field, String input) {\n" +
+    			"    Select dropdown = new Select(field);\n" +
+    			"    TestResult result1 = null;\n" +
+    			"    try {\n" +
+    			"        dropdown.selectByVisibleText(input);\n" +
+    			"        result1 = new TestResult(testCaseName, \"select\", input, input, input, \"Pass\");\n" +
+    			"    } catch (Exception e) {\n" +
+    			"        result1 = new TestResult(testCaseName, \"select\", input, input, \"Not selectable\", \"Fail\");\n" +
+    			"    }\n" +
+    			"    System.out.println(result1.toString());\n" +
+    			"}\n";
+
+    			String testCheckbox = "public void testCheckbox(String testCaseName, WebElement field, boolean shouldBeChecked) {\n" +
+    			"    boolean isChecked = field.isSelected();\n" +
+    			"    if (shouldBeChecked && !isChecked) {\n" +
+    			"        field.click();\n" +
+    			"        isChecked = field.isSelected();\n" +
+    			"    }\n" +
+    			"\n" +
+    			"    TestResult result1 = new TestResult(testCaseName, \"checkbox\", shouldBeChecked ? \"Checked\" : \"Unchecked\",\n" +
+    			"            shouldBeChecked ? \"Checked\" : \"Unchecked\", isChecked ? \"Checked\" : \"Unchecked\",\n" +
+    			"            isChecked == shouldBeChecked ? \"Pass\" : \"Fail\");\n" +
+    			"\n" +
+    			"    System.out.println(result1.toString());\n" +
+    			"}\n";
+
+    			String testRadioButton = "public void testRadioButton(String testCaseName, WebElement field) {\n" +
+    			"    boolean isSelected = field.isSelected();\n" +
+    			"    if (!isSelected) {\n" +
+    			"        field.click();\n" +
+    			"        isSelected = field.isSelected();\n" +
+    			"    }\n" +
+    			"\n" +
+    			"    TestResult result1 = new TestResult(testCaseName, \"radio\", \"Selected\", \"Selected\", \n" +
+    			"            isSelected ? \"Selected\" : \"Not Selected\", isSelected ? \"Pass\" : \"Fail\");\n" +
+    			"\n" +
+    			"    System.out.println(result1.toString());\n" +
+    			"}\n";
+
+//    			String allMethods = testTextField + "\n" + testEmailField + "\n" + testSelectField + "\n" + testCheckbox + "\n" + testRadioButton;
+
+    			executedMethods.add(testTextField);
+    			executedMethods.add(testEmailField);
+    			executedMethods.add(testSelectField);
+    			executedMethods.add(testCheckbox);
+    			executedMethods.add(testRadioButton);
+    }
     
     
     

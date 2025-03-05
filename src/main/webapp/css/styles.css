@@ -514,6 +514,31 @@ tbody button {
 }
 
 
+.brokenLinkResults {
+	overflow-y:scroll;
+}
+
+.brokenLinkResult{
+    font-size: 16px;
+    color: #333; /* Default text color */
+    padding: 10px;
+    /* display:flex; */
+    align-items: center;
+    border-radius: 5px;
+    /* min-height: 100px;
+    max-height: 100px; */
+    margin-bottom: 8px;
+    border-bottom: 5px;
+    word-wrap: break-word;
+}
+
+.apiTestResult{
+	padding : 15px;
+	border-radius: 7px;
+	margin-bottom : 20px; 
+	background-color: #ddd;
+}
+
 
 @media screen and (max-width : 800px){
     #side-bar{
