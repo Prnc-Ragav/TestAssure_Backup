@@ -79,6 +79,7 @@ public class FieldExtractingServlet extends HttpServlet {
 //    			
     			HttpSession session = request.getSession();
     			session.setAttribute("fieldExtractor", fieldExtractor);
+    			session.setAttribute("tesyURL", url);
 //    			session.setAttribute("extractedFields", testCases);
 				
                 String jsonResponse = new Gson().toJson(testCases);

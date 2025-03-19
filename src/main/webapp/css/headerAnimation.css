@@ -72,7 +72,8 @@ header {
     
     position: relative;
     /* height: 120px; */
-    background: linear-gradient(135deg, #0a2463, #3e92cc);
+    /* background: linear-gradient(135deg, #0a2463, #3e92cc); */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);

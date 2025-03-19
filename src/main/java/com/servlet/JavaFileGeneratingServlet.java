@@ -34,9 +34,11 @@ public class JavaFileGeneratingServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<String> executedMethods = (List<String>) request.getSession().getAttribute("executedMethods");
+		List<String> mainMethod = (List<String>) request.getSession().getAttribute("mainMethod");
+		List<String> testResultClassMethods = (List<String>) request.getSession().getAttribute("testResultClassMethod");
         String testUrl = (String) request.getSession().getAttribute("testUrl"); 
         
-        File file = TestCase_JavaFile_Generator.generateTestCaseFile(executedMethods, testUrl);
+        File file = TestCase_JavaFile_Generator.generateTestCaseFile(executedMethods, mainMethod, testResultClassMethods, testUrl);
         
         response.setContentType("text/x-java-source");
         response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());

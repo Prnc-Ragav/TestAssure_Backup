@@ -22,8 +22,8 @@ public class GeminiAPI {
         JSONObject requestBody = new JSONObject();
         requestBody.put("contents", new JSONObject()
                 .put("role", "user")
-                .put("parts", new JSONObject().put("text", "give valid and invalid testBody for this schema" + schema.asText() +  "as json[] give only json[] not any other things in cludeing the the first word json"))
-        );
+                .put("parts", new JSONObject().put("text", "give valid and invalid testBody for this schema" + schema.asText() + "as json[] give only json[] not any other things in cludeing the the first word json and inside this json[] every json object follow this format(valid:'',description:'',requestBody:{})"))
+        		);
 
        
         String response = sendRequest(requestBody.toString());

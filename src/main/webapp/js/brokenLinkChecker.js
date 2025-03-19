@@ -37,11 +37,11 @@ document.getElementById("startTesting").addEventListener("click", function () {
 					let color = link.result === "Passed" ? "green" : "red";
 						if(color == "green")
 						{
-							passedResultDiv.innerHTML +=  `<div class="brokenLinkResult pass" style="border-left: 5px solid #4CAF50;"><p><b>Test case Name :</b> ${link.testCaseName} </p>  <p><b>URL :</b> ${link.url} </p><p><b>Expected Output :</b>  ${link.expectedOutput} </p> <p><b>Actual Output :</b> ${link.actualOutput}</p></div>`;
+							passedResultDiv.innerHTML +=  `<div class="brokenLinkResult pass" style="border-left: 5px solid #4CAF50;">Test case Name : ${link.testCaseName} <br>  URL : ${link.url} <br>Expected Output :  ${link.expectedOutput} <br> Actual Output : ${link.actualOutput}</div>`;
 						}
 						else if(color == "red")
 						{
-							failedResultDiv.innerHTML += `<div class="brokenLinkResult fail" style="border-left: 5px solid #4CAF50;"><p><b>Test case Name :</b> ${link.testCaseName} </p>  <p><b>URL :</b> ${link.url} </p><p><b>Expected Output :</b>  ${link.expectedOutput} </p> <p><b>Actual Output :</b> ${link.actualOutput}</p></div>`;
+							failedResultDiv.innerHTML += `<div class="brokenLinkResult fail" style="border-left: 5px solid #dc3545cf;">Test case Name : ${link.testCaseName} <br>  URL : ${link.url}  <br>Expected Output : ${link.expectedOutput} <br> Actual Output : ${link.actualOutput}</div>`;
 						}
 						else{
 							failedResultDiv.innerHTML += `<div class="brokenLinkResult" style="color:red" > failed  </div>`;

@@ -1,8 +1,10 @@
 @charset "UTF-8";
 
 :root {
-    --primary-color: #2563eb;
-    --secondary-color: #1e40af;
+    /* --primary-color: #2563eb; */
+    --primary-color:#667eea;
+    /* --secondary-color: #1e40af; */
+    --secondary-color:#764ba2 100%;
     --background-color: #f3f4f6;
     --card-background: #ffffff;
     --text-color: #1f2937;
@@ -59,6 +61,11 @@ button {
 
 #side-bar nav li {
     margin:10px;
+}
+
+.selectedBG{
+	background-color: var(--primary-color);
+	color:white;
 }
 
 #side-bar nav li a{
@@ -148,6 +155,7 @@ button {
     padding:10px 5px;
     color:white;
     border-radius: 10px;
+    border: none;
 }
 
 #startTesting-button {
@@ -403,6 +411,7 @@ tbody button {
 	border-radius: 10px;
 	color:white;
 	font-size: 18px;
+	bordeR:none;
 }
 
 .report-div {

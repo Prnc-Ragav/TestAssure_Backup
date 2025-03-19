@@ -74,8 +74,14 @@ public class RunTestCasesServlet extends HttpServlet {
     		
             List<TestResult> results = fieldExtractor.runTests(fieldExtractor.testCaseFieldMap, allInputs, session);
             
-            List<String> executedMethods = fieldExtractor.executedMethods;
+            List<String> executedMethods = fieldExtractor.getExecutedMethods(); 
+            List<String> mainMethod = fieldExtractor.getMainMethod();
+            List<String> testResultClassMethod = fieldExtractor.getTestResultClassMethod();
+            
             session.setAttribute("executedMethods", executedMethods);
+            session.setAttribute("mainMethod", mainMethod);
+            session.setAttribute("testResultClassMethod", testResultClassMethod);
+
 //            getServletContext().setAttribute("testResults", results);
             
 			session.setAttribute("testResults", results);

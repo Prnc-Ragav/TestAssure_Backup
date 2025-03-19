@@ -23,13 +23,13 @@
         <nav>
             <ul>
                 <li>
-                    <a href="formValidator.html">Form Validator</a>
+                    <a href="formValidator.html" id="formValidator-id">Form Validator</a>
                 </li>
                 <li>
-                    <a href="brokenLinkChecker.html">Broken Access Control</a>
+                    <a href="brokenLinkChecker.html" id="brokenLink-id" class="selectedBG">Broken Access Control</a>
                 </li>
                 <li>
-                    <a href="ApiTester.html">API Tesing</a>
+                    <a href="ApiTester.html" id="API-id">API Tesing</a>
                 </li>
             </ul>
         </nav>
@@ -77,9 +77,10 @@
             <div class="floating-shape" style="width: 40px; height: 40px; top: 30%; left: 70%; animation: floatAround 10s ease-in-out infinite 2s;"></div>
             
             <div class="logo-container">
-                <div class="logo-text">
+            <img class="text-logo" src="images/textLogo.png">
+                <!-- <div class="logo-text">
                     <span class="test">Test</span><span class="assure">Assure</span>
-                </div>
+                </div> -->
             </div>
         </header>
 
@@ -95,21 +96,22 @@
                 <h1>Statistics Report</h1>
                 <div class="statistics-div">
                     <div class="statistic">
-                        <span class="testCaseStatistics" id="totalTestCases">24</span>
+                        <span class="testCaseStatistics" id="totalTestCases">00</span>
                         <span>Total Test Case</span>
                     </div>
                     <div class="statistic">
-                        <span class="testCaseStatistics" id="passedCases">12</span>
+                        <span class="testCaseStatistics" id="passedCases">00</span>
                         <span>Passed</span>
                     </div>
 					<div class="statistic">
-                        <span class="testCaseStatistics" id="failedCases">3</span>
+                        <span class="testCaseStatistics" id="failedCases">0</span>
                         <span>Failed</span>
                     </div>
                 </div>
             </div>
             <div class="brokenLinkResults  dg" id = "passed">
                 <h1>Passed</h1>
+                
                 <!--  <div id="test-result"></div>
                 <div id="download-buttons-div">
                 	<a href="downloadExcel">
@@ -136,8 +138,7 @@
         </div>
     </div>
 
-
-	<script type="js/headerAnimation.js"></script>
+	<script src="js/headerAnimation.js"></script>
     <script src="js/brokenLinkChecker.js"></script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+
 let landingAnime = document.getElementsByClassName("landing-anime");
 let loadingAnime = document.getElementsByClassName("loading-anime");
 let invalidInputAnime = document.getElementsByClassName("invalid-error-anime");
@@ -8,6 +9,24 @@ let canvasDiv = document.getElementsByClassName("canvas-div");
 document.getElementById("menu-icon").addEventListener("click", function () {
 	document.getElementById("side-bar").classList.toggle("show");
 });
+
+/*document.getElementById("formValidator-id").addEventListener("click", function(){
+	document.getElementById("formValidator-id").classList.add("selectedBG");
+	document.getElementById("brokenLink-id").classList.remove("selectedBG");
+	document.getElementById("API-id").classList.remove("selectedBG");
+});
+
+document.getElementById("brokenLink-id").addEventListener("click", function(){
+	document.getElementById("formValidator-id").classList.remove("selectedBG");
+	document.getElementById("brokenLink-id").classList.add("selectedBG");
+	document.getElementById("API-id").classList.remove("selectedBG");
+});
+
+document.getElementById("API-id").addEventListener("click", function(){
+	document.getElementById("formValidator-id").classList.remove("selectedBG");
+	document.getElementById("brokenLink-id").classList.remove("selectedBG");
+	document.getElementById("API-id").classList.add("selectedBG");
+});*/
   
   
   
@@ -26,34 +45,36 @@ let startTestingButton = document.getElementById("startTesting-button");
 
 fetchFieldsBtn.addEventListener("click", function() {
 	
-	console.log("entered");
+	if(document.getElementById("inputURL").value!=""){
+		console.log("entered");
 	
-	document.getElementById("totalTestCount").innerText = "00";
-	document.getElementById("passedTestCount").innerText = "00";
-	document.getElementById("failedTestCount").innerText = "0";
-	
-	document.getElementById("test-result").innerText="";
-	document.getElementById("report-passedTestCases").innerText="";
-	document.getElementById("report-failedTestCases").innerText="";
-	
-	for (let i = 0; i < landingAnime.length; i++) {
-        landingAnime[i].classList.remove("active");
-		landingAnime[i].classList.add("hide");
-    }
-	
-	for (let i = 0; i < loadingAnime.length; i++) {
-		loadingAnime[i].classList.remove("hide");
-        loadingAnime[i].classList.add("active");
-    }
-	
-	clearCanvas('testResultsChart');
-	clearCanvas('categoryChart');
-	
-	for (let i = 0; i < canvasDiv.length; i++) {
-		canvasDiv[i].classList.add("hideCanvas");
-	}
+		document.getElementById("totalTestCount").innerText = "00";
+		document.getElementById("passedTestCount").innerText = "00";
+		document.getElementById("failedTestCount").innerText = "0";
 		
-    fetchTestCases();
+		document.getElementById("test-result").innerText="";
+		document.getElementById("report-passedTestCases").innerText="";
+		document.getElementById("report-failedTestCases").innerText="";
+		
+		for (let i = 0; i < landingAnime.length; i++) {
+	        landingAnime[i].classList.remove("active");
+			landingAnime[i].classList.add("hide");
+	    }
+		
+		for (let i = 0; i < loadingAnime.length; i++) {
+			loadingAnime[i].classList.remove("hide");
+	        loadingAnime[i].classList.add("active");
+	    }
+		
+		clearCanvas('testResultsChart');
+		clearCanvas('categoryChart');
+		
+		for (let i = 0; i < canvasDiv.length; i++) {
+			canvasDiv[i].classList.add("hideCanvas");
+		}
+			
+	    fetchTestCases();
+	}
 });
 
 saveTestsButton.addEventListener("click", function(){
@@ -553,7 +574,7 @@ document.getElementById("startTesting-button").addEventListener("click", functio
 			
 			resultDiv.innerHTML += `
 		            <strong>Test Case:</strong> ${rslt.testCaseName}<br>
-		            <strong>Field Type:</strong> ${rslt.fieldType} (${rslt.fieldName})<br>
+		            <strong>Field Type:</strong> ${rslt.fieldType}<br>
 		            <strong>Given Input:</strong> ${rslt.givenInput}<br>
 		            <strong>Expected Output:</strong> ${rslt.expectedOutput}<br>
 		            <strong>Actual Output:</strong> ${rslt.actualOutput}<br>
